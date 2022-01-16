@@ -1,5 +1,6 @@
 const initial = {
-	people: []
+	people: [],
+	planets: [],
 }
 
 export default function reducer(state = initial, action) {
@@ -9,6 +10,15 @@ export default function reducer(state = initial, action) {
 				...state,
 				people: [
 					...state.people,
+					...action.payload
+				]
+			}
+		}
+		case "SET_PLANETS": {
+			return {
+				...state,
+				planets: [
+					...state.planets,
 					...action.payload
 				]
 			}

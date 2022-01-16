@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App">
       <button
-        onClick={() => dispatch({type: 'CLICK'})}
+        onClick={() => dispatch({type: 'LOAD_DATA'})}
       >click</button>
     </div>
   );
