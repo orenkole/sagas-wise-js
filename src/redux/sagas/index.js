@@ -1,6 +1,7 @@
 import {
 	take,
-	takeEvery
+	takeEvery,
+	put
 } from "redux-saga/effects";
 
 async function getPeople() {
@@ -10,7 +11,7 @@ async function getPeople() {
 }
 export function* workerSaga() {
 	const data = yield getPeople()
-	console.log(data);
+	yield put({type: "SET_PEOPLE", payload: data.results})	
 }
 
 export function* watchClickSaga() {
