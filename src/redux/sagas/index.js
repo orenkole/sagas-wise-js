@@ -4,6 +4,7 @@ import {
 	put,
 	call,
 	fork,
+	join,
 } from "redux-saga/effects";
 
 async function swapiGet(pattern) {
@@ -15,6 +16,7 @@ async function swapiGet(pattern) {
 export function* loadPeople() {
 	const people = yield call(swapiGet, 'people');
 	yield put({type: "SET_PEOPLE", payload: people.results})
+	return people;
 }
 
 export function* loadPlanets() {
@@ -23,8 +25,11 @@ export function* loadPlanets() {
 }
 
 export function* workerSaga() {
-	yield spawn(loadPeople);
+	const task = yield fork(loadPeople);
 	yield spawn(loadPlanets);
+
+	const people = yield join(task);
+	console.log('people join: ', people);
 }
 
 export function* watchLoadDataSaga() {
