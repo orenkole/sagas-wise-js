@@ -2,7 +2,8 @@ import {
 	take,
 	takeEvery,
 	put,
-	call
+	call,
+	fork,
 } from "redux-saga/effects";
 
 async function swapiGet(pattern) {
@@ -10,19 +11,26 @@ async function swapiGet(pattern) {
 	const data = await request.json();
 	return data;
 }
-export function* workerSaga() {
+
+export function* loadPeople() {
 	const people = yield call(swapiGet, 'people');
-	console.log('people: ', people);
-	const planets = yield call(swapiGet, 'planets');
-	console.log('planets: ', planets);
 	yield put({type: "SET_PEOPLE", payload: people.results})
-	yield put({type: "SET_PLANETS", payload: planets.results})	
 }
 
-export function* watchClickSaga() {
+export function* loadPlanets() {
+	const planets = yield call(swapiGet, 'planets');
+	yield put({type: "SET_PLANETS", payload: planets.results});
+}
+
+export function* workerSaga() {
+	yield fork(loadPeople);
+	yield fork(loadPlanets);
+}
+
+export function* watchLoadDataSaga() {
 	yield takeEvery('LOAD_DATA', workerSaga);
 }
 
 export default function* rootSaga() {
-	yield watchClickSaga() 
+	yield fork(watchLoadDataSaga)
 }
