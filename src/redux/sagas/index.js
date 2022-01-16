@@ -23,8 +23,8 @@ export function* loadPlanets() {
 }
 
 export function* workerSaga() {
-	yield fork(loadPeople);
-	yield fork(loadPlanets);
+	yield spawn(loadPeople);
+	yield spawn(loadPlanets);
 }
 
 export function* watchLoadDataSaga() {
