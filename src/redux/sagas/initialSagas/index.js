@@ -1,6 +1,5 @@
 import {all, call, delay, fork} from "redux-saga/effects";
 
-
 function* auth() {
 	yield delay(2000);
 	console.log('auth ok')
@@ -13,7 +12,7 @@ function* loadUsers() {
 	console.log('data: ', data);
 }
 
-export function* loadBasicData() {
+export default function* loadBasicData() {
 	yield all([
 		fork(auth),
 		fork(loadUsers)

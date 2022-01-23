@@ -1,8 +1,12 @@
 import {all, call, spawn} from "redux-saga/effects";
-import { loadBasicData } from "./initialSagas";
+import loadBasicData from "./initialSagas";
+import pageLoaderSaga from "./pageLoader";
 
 export default function* rootSaga() {
-	const sagas = [loadBasicData];
+	const sagas = [
+		loadBasicData,
+		pageLoaderSaga
+	];
 
 	const retrySagas =  sagas.map(saga => {
 		return spawn(function* () {
