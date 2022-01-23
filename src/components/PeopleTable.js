@@ -1,10 +1,20 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { LOAD_USERS } from '../redux/reducers/people/actions';
 import { selectPeople } from '../redux/reducers/people/selectors';
 import PeopleTablePagination from './PeopleTablePagination';
 
 function PeopleTable() {
+	const dispatch = useDispatch();
   const people = useSelector(selectPeople);
   
+	const changePage = newPage => dispatch({
+		type: LOAD_USERS,
+		payload: {
+			page: newPage,
+			search: people.search
+		}
+	})
+
   return (
     <>
       <h1> redux-saga tutorial</h1>
@@ -44,7 +54,7 @@ function PeopleTable() {
 							page={people.page}
 							total={people.data.count}
 							onChange={(newPage) => {
-								changePage(page);
+								changePage(newPage);
 							}}
 						/>
 					</>
