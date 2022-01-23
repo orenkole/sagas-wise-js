@@ -1,17 +1,8 @@
 import {all, call, spawn} from "redux-saga/effects";
-
-export function* saga1() {
-	console.log('Saga 1')
-}
-export function* saga2() {
-	console.log('Saga 2')
-}
-export function* saga3() {
-	console.log('Saga 3')
-}
+import { loadBasicData } from "./initialSagas";
 
 export default function* rootSaga() {
-	const sagas = [saga1, saga2, saga2];
+	const sagas = [loadBasicData];
 
 	const retrySagas =  sagas.map(saga => {
 		return spawn(function* () {
