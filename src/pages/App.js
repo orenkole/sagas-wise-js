@@ -1,7 +1,5 @@
 import './App.css';
-import { useDispatch, useSelector } from 'react-redux';
-import {Link} from "react-router-dom";
-import store from '../redux';
+import { useSelector } from 'react-redux';
 
 function App() {
   const store = useSelector(store => store);
@@ -9,12 +7,7 @@ function App() {
   
   return (
     <div className="App">
-      redux-saga tutorial
-      <div>
-        <Link to={'/blog'}>
-          open blog 
-        </Link>
-      </div>
+      <h1> redux-saga tutorial</h1>
     </div>
   );
 }

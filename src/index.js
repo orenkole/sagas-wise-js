@@ -9,8 +9,6 @@ import './index.css';
 import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
 import store from './redux';
-import Blog from './pages/Blog';
-import { NotFound } from './pages/NotFound';
 import { history } from './redux/reducers';
 
 ReactDOM.render(
@@ -19,12 +17,6 @@ ReactDOM.render(
       <Switch>
         <Route path='/' exact>
           <App />
-        </Route>
-        <Route path='/blog' exact>
-          <Blog />
-        </Route>
-        <Route path='*'>
-          <NotFound />
         </Route>
       </Switch>
     </ConnectedRouter>
