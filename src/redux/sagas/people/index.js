@@ -1,6 +1,7 @@
 import { takeEvery, call, apply, select, take, put, fork } from "@redux-saga/core/effects";
 import { LOCATION_CHANGE } from "connected-react-router";
 import { LOAD_USERS, LOAD_USERS_SUCCESS } from "../../reducers/people/actions";
+import { selectPeople } from "../../reducers/people/selectors";
 
 export function* loadPeopleDetails() {
 
@@ -20,7 +21,7 @@ export function* loadUserOnRouteEnter() {
 	while(true) {
 		const action = yield take(LOCATION_CHANGE);
 		if(action.payload.location.pathname === '/') {
-			const state = yield select(state => state.people);
+			const state = yield select(selectPeople);
 			const {page, search} = state;
 			yield put({
 				type: LOAD_USERS,
