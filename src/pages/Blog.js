@@ -1,11 +1,8 @@
-import { useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 
-export const Blog = () => {
-	const dispatch = useDispatch()
-	useEffect(() => {
-		dispatch({type: 'LOAD_BLOG_DATA'})
-	}, [])
+export default function Blog () {
+	const blogData = useSelector(store => store.app.blog);
+	console.log('blog data', blogData);
 	return (
 		<div>Blog</div>
 	)

@@ -1,17 +1,20 @@
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
+import {Link} from "react-router-dom";
 import store from '../redux';
 
 function App() {
   const store = useSelector(store => store);
   console.log(store);
-  const dispatch = useDispatch();
-
+  
   return (
     <div className="App">
-      <button
-        onClick={() => dispatch({type: 'LOAD_DATA'})}
-      >click</button>
+      redux-saga tutorial
+      <div>
+        <Link to={'/blog'}>
+          open blog 
+        </Link>
+      </div>
     </div>
   );
 }
