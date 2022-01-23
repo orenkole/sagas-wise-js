@@ -1,4 +1,4 @@
-import {all, call, fork, spawn, take} from "redux-saga/effects";
+import {all, call, fork, spawn, take, takeLatest} from "redux-saga/effects";
 import loadBasicData from "./initialSagas";
 import pageLoaderSaga from "./pageLoader";
 
@@ -12,8 +12,7 @@ export function* fetchPlanets() {
 
 export function* loadOnAction() {
 	while(true) {
-		yield take ('LOAD_SOME_DATA');
-		yield fork(fetchPlanets);
+		yield takeLatest ('LOAD_SOME_DATA', fetchPlanets);
 	}
 }
 
