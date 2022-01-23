@@ -1,7 +1,10 @@
 import {all, call, spawn} from "redux-saga/effects";
+import peopleSaga from "./people";
 
 export default function* rootSaga() {
-	const sagas = [];
+	const sagas = [
+		peopleSaga
+	];
 
 	const retrySagas =  sagas.map(saga => {
 		return spawn(function* () {
@@ -16,5 +19,5 @@ export default function* rootSaga() {
 		})
 	})
 	
-	yield all(retrySagas);
+	yield all(retrySagas); 
 }
