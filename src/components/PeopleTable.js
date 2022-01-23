@@ -15,9 +15,26 @@ function PeopleTable() {
 		}
 	})
 
+	const search = (e) => dispatch({
+		type: LOAD_USERS,
+		payload: {
+			page: 1,
+			search: e.target.value
+		}
+	})
+
   return (
     <>
       <h1> redux-saga tutorial</h1>
+			<form style={{display: 'inline-block'}}>
+				<input 
+					type="text"
+					style={{padding: '12px 20px'}}
+					value={people.search}
+					placeholder="search people"
+					onChange={search}
+				/>
+			</form>
       {
         people.loading
         ? (
