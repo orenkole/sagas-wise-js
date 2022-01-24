@@ -3,7 +3,7 @@ import App from "./pages/App";
 import Details from "./pages/Details";
 
 export const MAIN_ROUTE = 'MAIN_ROUTE';
-export const DETAILS_ROUTE = 'PEOPLE_DETAILS_ROUTE';
+export const PEOPLE_DETAILS = 'PEOPLE_DETAILS_ROUTE';
 
 export const routes = [
 	{
@@ -13,12 +13,20 @@ export const routes = [
 		component: App
 	},
 	{
-		id: DETAILS_ROUTE,
+		id: PEOPLE_DETAILS,
 		path: '/people/:id',
 		exact: true,
 		component: Details
 	}
 ]
+
+export const getRouteConfig = id => {
+	const route = routes.find(r => r.id === id);
+	if (route) {
+		const {component, ...rest} = route;
+		return rest;
+	}
+}
 
 export default function Routes() {
 	return (

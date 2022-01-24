@@ -1,10 +1,29 @@
 import { takeEvery, call, apply, select, take, put, fork } from "@redux-saga/core/effects";
 import { LOCATION_CHANGE } from "connected-react-router";
-import { LOAD_USERS, LOAD_USERS_SUCCESS } from "../../reducers/people/actions";
+import { matchPath } from "react-router";
+import { getRouteConfig, MAIN_ROUTE, PEOPLE_DETAILS } from "../../../routes";
+import { LOAD_USERS, LOAD_USERS_FAILURE, LOAD_USERS_SUCCESS } from "../../reducers/people/actions";
 import { selectPeople } from "../../reducers/people/selectors";
+import { LOAD_USER_DETAILS, LOAD_USER_DETAILS_FAILURE, LOAD_USER_DETAILS_SUCCESS } from "../../reducers/peopleDetails/actions";
 
-export function* loadPeopleDetails() {
-
+export function* loadPeopleDetails({payload}) {
+	const {id} = payload;
+	try {
+		const request = yield call(
+			fetch,
+			`https://swapi.dev/api/people/${id}`
+		)
+		const data = yield apply(request, request.json);
+		yield put({
+			type: LOAD_USER_DETAILS_SUCCESS,
+			payload: data
+		})
+	} catch (err) {
+		yield put({
+			type: LOAD_USER_DETAILS_FAILURE,
+			payload: err
+		})
+	}
 }
 
 export function* loadPeopleList({payload}) {
@@ -17,10 +36,10 @@ export function* loadPeopleList({payload}) {
 	})
 }
 
-export function* loadUserOnRouteEnter() {
+export function* routeChangeSaga() {
 	while(true) {
 		const action = yield take(LOCATION_CHANGE);
-		if(action.payload.location.pathname === '/') {
+		if(matchPath(action.payload.location.pathname, getRouteConfig(MAIN_ROUTE) )) {
 			const state = yield select(selectPeople);
 			const {page, search} = state;
 			yield put({
@@ -30,10 +49,32 @@ export function* loadUserOnRouteEnter() {
 				}
 			})
 		}
+
+		const detailsPage = matchPath(action.payload.location.pathname, getRouteConfig(PEOPLE_DETAILS))
+
+		if(detailsPage) {
+			console.log('detail page config', detailsPage);
+			// {
+			// 	isExact: true
+			// 	params: {id: '4'}
+			// 	path: "/people/:id"
+			// 	url: "/people/4"
+			// }
+			const {id} = detailsPage.params;
+			if(id) {
+				yield put({
+					type: LOAD_USER_DETAILS,
+					payload: {
+						id
+					}
+				})
+			}
+		}
 	}
 }
 
 export default function* peopleSaga() {
-	yield fork(loadUserOnRouteEnter);
+	yield fork(routeChangeSaga);
 	yield takeEvery(LOAD_USERS, loadPeopleList);
+	yield takeEvery(LOAD_USER_DETAILS, loadPeopleDetails)
 }
